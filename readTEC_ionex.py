@@ -87,8 +87,7 @@ def readTEC(filename, exponent = 0.1):
                              index=[np.repeat(times, latarray.shape[0]), np.tile(latarray, times.shape[0])],
                              columns=lonarray)
     df_TEC.index.names = ["Time", "Lat"]
-    df_TEC.columns.names = ["Lon"]
     df_TECrms.index.names = ["Time", "Lat"]
-    df_TECrms.columns.names = ["Lon"]
 
-    return df_TEC, df_TECrms
+
+    return df_TEC, df_TECrms, lonarray, latarray
