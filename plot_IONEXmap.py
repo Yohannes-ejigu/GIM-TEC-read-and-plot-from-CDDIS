@@ -36,5 +36,5 @@ def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, time):
   # 4. Removed labels from top and right side
   gl.xlabels_top = False
   gl.ylabels_right = False
-  plt.colorbar(label='TEC [TECu]')
+  fig.colorbar(label='TEC [TECu]')
   plt.show()
