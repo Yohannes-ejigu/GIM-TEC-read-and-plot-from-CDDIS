@@ -34,8 +34,7 @@ def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, time):
   gl.yformatter = LATITUDE_FORMATTER
 
   # 4. Removed labels from top and right side
-  # comment out if you want to include
   gl.xlabels_top = False
   gl.ylabels_right = False
-
+  plt.colorbar(label='TEC [TECu]')
   plt.show()
