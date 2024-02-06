@@ -22,7 +22,9 @@ def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, time):
 
   lon, lat = np.meshgrid(lonarray, latarray)
   # Create the plot
-  plt.pcolormesh(lon, lat, TEC_at_T, shading='auto')
+  im = ax.pcolormesh(lon, lat, TEC_at_T, shading='auto')
+  fig.colorbar(im, ax=ax,label='TEC [TECu]')
+  #plt.pcolormesh(lon, lat, TEC_at_T, shading='auto')
   # 1. Maps the gridlines to the variable gl
   gl = ax.gridlines(crs=to_proj, draw_labels=True)
   # 2. Adds two attributes to gl, which are xlocator and ylocator
@@ -36,5 +38,5 @@ def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, time):
   # 4. Removed labels from top and right side
   gl.xlabels_top = False
   gl.ylabels_right = False
-  fig.colorbar(label='TEC [TECu]')
+  #fig.colorbar(label='TEC [TECu]')
   plt.show()
