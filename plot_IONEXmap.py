@@ -9,7 +9,7 @@ def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, time):
 
   TEC_at_T = TEC_map.loc[time]
 
-  fig = plt.figure(figsize=[6,10])
+  fig = plt.figure(figsize=[8,12])
   to_proj = ccrs.PlateCarree()
   from_proj = ccrs.PlateCarree()
 
