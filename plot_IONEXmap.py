@@ -24,7 +24,7 @@ def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, time):
  # Create the plot
   im = ax.pcolormesh(lon, lat, TEC_at_T, shading='auto', transform=from_proj)
  # Add colorbar
-  cbar = plt.colorbar(im, ax=ax, orientation='vertical', shrink=0.3)
+  cbar = plt.colorbar(im, ax=ax, orientation='vertical', shrink=0.25)
   cbar.set_label('TEC [TECu]')  # Add label to the colorbar
   #plt.pcolormesh(lon, lat, TEC_at_T, shading='auto')
   # 1. Maps the gridlines to the variable gl
