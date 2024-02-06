@@ -21,11 +21,11 @@ def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, time):
   ax.set_global()
 
   lon, lat = np.meshgrid(lonarray, latarray)
-  # Create the plot
-  im = ax.pcolormesh(lon, lat, TEC_at_T, shading='auto')
-  fig.colorbar(im, ax=ax,label='TEC [TECu]')
-  # Adjust colorbar scale
-  cbar.set_clim(-0.5, 0.5)
+ # Create the plot
+  im = ax.pcolormesh(lon, lat, TEC_at_T, shading='auto', transform=from_proj)
+ # Add colorbar
+  cbar = plt.colorbar(im, ax=ax, orientation='vertical')
+  cbar.set_label('TEC [TECu]')  # Add label to the colorbar
   #plt.pcolormesh(lon, lat, TEC_at_T, shading='auto')
   # 1. Maps the gridlines to the variable gl
   gl = ax.gridlines(crs=to_proj, draw_labels=True)
@@ -40,5 +40,5 @@ def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, time):
   # 4. Removed labels from top and right side
   gl.xlabels_top = False
   gl.ylabels_right = False
-  #fig.colorbar(label='TEC [TECu]')
+  plt.title(f'Total Electron Content at Time: {time}')
   plt.show()
