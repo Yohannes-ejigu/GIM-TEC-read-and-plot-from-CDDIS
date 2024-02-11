@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import geopandas as gpd
 import cartopy.crs as ccrs
-def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, time):
+def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, times):
     from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
     from matplotlib import ticker
     lonLabels = np.arange(-180, 180, 60)
