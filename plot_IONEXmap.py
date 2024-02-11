@@ -4,41 +4,67 @@ import matplotlib.pyplot as plt
 import geopandas as gpd
 import cartopy.crs as ccrs
 def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, time):
-  from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
-  from matplotlib import ticker
+    from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
+    from matplotlib import ticker
+    lonLabels = np.arange(-180, 180, 60)
+    latLabels = np.arange(-90, 90, 30)
 
-  TEC_at_T = TEC_map.loc[time]
+    if len(times) == 1:
+        fig, ax = plt.subplots(figsize=(8, 4), subplot_kw={'projection': ccrs.PlateCarree()})
+        axs = [ax]
+    else:
+        num_times = len(times)
+        num_rows = (num_times + 2) // 3  # Adjust number of rows based on the number of times
+        num_cols = 2 if num_times <= 4 else 3  # Set number of columns based on the number of times
+        Npanel = num_cols*num_rows
+        fig, axs = plt.subplots(num_rows, num_cols, figsize=(8, 2*num_rows), subplot_kw={'projection': ccrs.PlateCarree()}, sharex=True, sharey=True)
+        axs = axs.flatten()
 
-  fig = plt.figure(figsize=[8,12])
-  to_proj = ccrs.PlateCarree()
-  from_proj = ccrs.PlateCarree()
+    cbar_width = 0.03
+    cbar_pad = 0.03
 
-  lonLabels = np.arange(-180, 180, 60)
-  latLabels = np.arange(-90, 90, 30)
+    cbar_ax = fig.add_axes([1.01, 0.15, cbar_width, 0.7])  # position of the colorbar axes
 
-  ax = plt.subplot(projection=to_proj)
-  ax.coastlines()
-  ax.set_global()
+    for idx, time in enumerate(times):
+        if len(times) == 1:
+            ax = axs[0]
+        else:
+            if idx >= len(axs):  # Check if we have more times than subplots
+                break
+            ax = axs[idx]
 
-  lon, lat = np.meshgrid(lonarray, latarray)
- # Create the plot
-  im = ax.pcolormesh(lon, lat, TEC_at_T, shading='auto', transform=from_proj)
- # Add colorbar
-  cbar = plt.colorbar(im, ax=ax, orientation='vertical', shrink=0.25)
-  cbar.set_label('TEC [TECu]')  # Add label to the colorbar
-  #plt.pcolormesh(lon, lat, TEC_at_T, shading='auto')
-  # 1. Maps the gridlines to the variable gl
-  gl = ax.gridlines(crs=to_proj, draw_labels=True)
-  # 2. Adds two attributes to gl, which are xlocator and ylocator
-  gl.xlocator = ticker.FixedLocator(lonLabels)
-  gl.ylocator = ticker.FixedLocator(latLabels)
+        TEC_at_T = TEC_map.loc[time]
 
-  # 3. Changes labels to show degrees North/South and East/West
-  gl.xformatter = LONGITUDE_FORMATTER
-  gl.yformatter = LATITUDE_FORMATTER
+        ax.coastlines()
+        ax.set_global()
 
-  # 4. Removed labels from top and right side
-  gl.xlabels_top = False
-  gl.ylabels_right = False
-  plt.title(f'Total Electron Content at Time: {time}')
-  plt.show()
+        lon, lat = np.meshgrid(lonarray, latarray)
+        # Create the plot
+        im = ax.pcolormesh(lon, lat, TEC_at_T, shading='auto', transform=ccrs.PlateCarree())
+        # Maps the gridlines to the variable gl
+        gl = ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True)
+        # Adds two attributes to gl, which are xlocator and ylocator
+        gl.xlocator = ticker.FixedLocator(lonLabels)
+        gl.ylocator = ticker.FixedLocator(latLabels)
+        # Changes labels to show degrees North/South and East/West
+        gl.xformatter = LONGITUDE_FORMATTER
+        gl.yformatter = LATITUDE_FORMATTER
+        # Removed labels from top and right side
+        gl.xlabels_top = False
+        gl.ylabels_right = False
+        if len(times) != 1 and Npanel-idx > num_cols :
+          gl.xlabels_bottom = False
+        gl.ylabels_left = True if idx%3 == 0 else False
+        formatted_time = f'{time:02d}:00'  # Assuming time is in hours, add :00 for minutes
+        ax.set_title(f'TEC at Time: {formatted_time}')
+
+    # Ensure that all subplots share the same x and y axes
+    for ax in axs:
+        ax.set_aspect('auto')  # Setting aspect to auto ensures that the map projection is not distorted
+
+    # Add colorbar
+    cbar = plt.colorbar(im, cax=cbar_ax, orientation='vertical', pad=cbar_pad, shrink=0.1)
+    cbar.set_label('TEC [TECu]')  # Add label to the colorbar
+
+    plt.tight_layout(pad=0.1,w_pad=0.0)
+    plt.show()
