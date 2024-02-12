@@ -54,7 +54,7 @@ def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, times):
         gl.ylabels_right = False
         if len(times) != 1 and Npanel-idx > num_cols :
           gl.xlabels_bottom = False
-        gl.ylabels_left = True if idx%3 == 0 else False
+        gl.ylabels_left = True if idx%num_cols == 0 else False
         formatted_time = f'{time:02d}:00'  # Assuming time is in hours, add :00 for minutes
         ax.set_title(f'TEC at Time: {formatted_time}')
 
