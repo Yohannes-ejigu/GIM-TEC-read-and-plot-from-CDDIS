@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import geopandas as gpd
 import cartopy.crs as ccrs
-def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, times):
+def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, times, label):
     from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
     from matplotlib import ticker
     lonLabels = np.arange(-180, 180, 60)
@@ -64,7 +64,7 @@ def plot_IONEXmap_at_T(TEC_map, lonarray, latarray, times):
 
     # Add colorbar
     cbar = plt.colorbar(im, cax=cbar_ax, orientation='vertical', pad=cbar_pad, shrink=0.1)
-    cbar.set_label('TEC [TECu]')  # Add label to the colorbar
+    cbar.set_label(label)  # Add label to the colorbar
 
     plt.tight_layout(pad=0.1,w_pad=0.0)
     plt.show()
