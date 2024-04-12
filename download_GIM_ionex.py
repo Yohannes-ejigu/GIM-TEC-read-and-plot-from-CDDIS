@@ -27,6 +27,7 @@ def download_IONEX(yr, day, center, username, psw):
     except subprocess.CalledProcessError as e_type2:
         # If type 2 download fails, try type 3 options
         for ionex_Zip_type3 in ionex_Zip_type3_options:
+            print(ionex_Zip_type3)
             try:
                 url_type3 = 'https://cddis.nasa.gov/archive/gps/products/ionex/{:04}/{:03}/{}'.format(yr, day, ionex_Zip_type3)
                 subprocess.run(['wget', '--auth-no-challenge', '--user', username, '--password', psw, url_type3], check=True)
